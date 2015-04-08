@@ -1,5 +1,5 @@
 {
-	"ImportPath": "github.com/rayyildiz/go-heroku-example",
+	"ImportPath": "github.com/rayyildiz/rayyildiz-go-heroku-example",
 	"GoVersion": "go1.4.2",
 	"Deps": []
 }
