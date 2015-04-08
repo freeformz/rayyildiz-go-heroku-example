@@ -1,1 +1,1 @@
-web: rayyildiz-go
+web: rayyildiz-go-heroku-example
