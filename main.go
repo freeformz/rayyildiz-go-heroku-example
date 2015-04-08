@@ -7,9 +7,6 @@ import (
 	"os"
 )
 
-
-
-
 type Payload struct {
     Stuffs Data
 }
@@ -22,18 +19,6 @@ type Data struct {
 type Fruit map[string] int
 
 type Vegetable map[string] int
-
-
-func ServeRequest(res http.ResponseWriter, req *http.Request) {
-
-    response, err := getJsonReslt()
-    if ( err != nil){
-        panic(err)
-    }
-
-    fmt.Fprintf(res,string(response))
-}
-
 
 func getJsonReslt() ([]byte, error) {
     f := make(map[string] int)
@@ -55,14 +40,19 @@ func getJsonReslt() ([]byte, error) {
 
 
 func main() {
-	http.HandleFunc("/", ServeRequest)
+	http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
+
+	    response, err := getJsonReslt()
+	    if ( err != nil){
+	        panic(err)
+	    }
+
+	    fmt.Fprintf(w,string(response))
+	})
+
 	fmt.Println("listening...")
 	err := http.ListenAndServe(":"+os.Getenv("PORT"), nil)
 	if err != nil {
 		panic(err)
 	}
-}
-
-func hello(res http.ResponseWriter, req *http.Request) {
-	fmt.Fprintln(res, "hello, heroku")
 }
