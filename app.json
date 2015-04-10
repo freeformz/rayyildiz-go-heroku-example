@@ -1,0 +1,11 @@
+{
+  "name": "go-heroku-example",
+  "description": "A go sample for Heroku",
+  "keywords": [ "go", "golang", "example" ],
+  "repository": "https://github.com/rayyildiz/rayyildiz-go-heroku-example",
+  "success_url": "/",
+  "env" : {
+    "BUILDPACK_URL": "https://github.com/heroku/heroku-buildpack-go.git"
+  }
+}
+
