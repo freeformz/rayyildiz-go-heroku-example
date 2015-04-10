@@ -49,6 +49,7 @@ func main() {
 			return
 		}
 
+		w.Header().Set("Content-Type", "application/json")
 		w.Write(response)
 	})
 
