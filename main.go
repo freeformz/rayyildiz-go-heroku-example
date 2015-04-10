@@ -1,58 +1,60 @@
 package main
 
 import (
-	"fmt"
 	"encoding/json"
+	"fmt"
+	"log"
 	"net/http"
 	"os"
 )
 
 type Payload struct {
-    Stuffs Data
+	Stuffs Data
 }
 
 type Data struct {
-    Fruits Fruit
-    Vegenatbles Vegetable
+	Fruits      Fruit
+	Vegenatbles Vegetable
 }
 
-type Fruit map[string] int
+type Fruit map[string]int
 
-type Vegetable map[string] int
+type Vegetable map[string]int
 
-func getJsonReslt() ([]byte, error) {
-    f := make(map[string] int)
-    f["Apple"] = 3
-    f["Banana"] = 21
+func getJsonResult() ([]byte, error) {
+	f := make(map[string]int)
+	f["Apple"] = 3
+	f["Banana"] = 21
 
+	v := make(map[string]int)
+	v["Domatoes"] = 6
+	v["Cucumber"] = 13
 
-    v := make(map[string] int)
-    v["Domatoes"] = 6
-    v["Cucumber"] = 13
+	d := Data{f, v}
 
+	p := Payload{d}
 
-    d := Data{f,v}
-
-    p := Payload{d}
-
-    return json.MarshalIndent(p,"", " ")
+	return json.MarshalIndent(p, "", " ")
 }
-
 
 func main() {
+	log.SetFlags(0)
+
 	http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
 
-	    response, err := getJsonReslt()
-	    if ( err != nil){
-	        panic(err)
-	    }
+		response, err := getJsonResult()
+		if err != nil {
+			log.Println(err)
+			http.Error(w, fmt.Sprintf("Error: %q", err.Error()), http.StatusInternalServerError)
+			return
+		}
 
-	    fmt.Fprintf(w,string(response))
+		w.Write(response)
 	})
 
-	fmt.Println("listening...")
+	log.Println("listening...")
 	err := http.ListenAndServe(":"+os.Getenv("PORT"), nil)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 }
